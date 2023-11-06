@@ -31,18 +31,17 @@
 
 
 class CustomUser:
-    username :str
-    password :str
+    username: str
+    password: str
 
-   
 
 class Task:
-    title : str
-    description : str
-    created_at : str
-    due_date : str
-    is_completed : bool
-    user : str
+    title: str
+    description: str
+    created_at: str
+    due_date: str
+    is_completed: bool
+    user: str
 
     def mark_as_completed(self):
         self.is_completed = True
