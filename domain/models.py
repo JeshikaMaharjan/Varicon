@@ -24,13 +24,14 @@ class Task:
         print("User", user)
         print(tasks)
 
-    def add_task(task: str, priority: int):
+    def add_task(self, task: str, priority: int):
+        pass
+        # implementation incomplete
+
+    def delete_task(self, task_id: int):
         pass
 
-    def delete_task(task_id: int):
-        pass
-
-    def edit_task(task_id: int, new_task: str, priority: int):
+    def edit_task(self, task_id: int, new_task: str, priority: int):
         pass
 
 
