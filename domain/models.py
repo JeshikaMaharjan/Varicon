@@ -9,31 +9,24 @@ class User:
 
 
 # Value objects
-class TaskItem:
+class Task:
     id: int
-    name: str
+    task_description: str
     priority: int
+    completed: bool
 
 
 # Aggregates
-class Task:
-    def __init__(self, id: int, user: {User}, tasks: [{TaskItem}]):
-        self.id = id
-        self.user = user
-        self.tasks = tasks
-        print("User", user)
-        print(tasks)
+class TaskList:
+    def __init__(self, id: int, user: {User}, tasks: [Task]):
+        self.tasks = {self.id: id, self.user: user, self.tasks: tasks}
 
-    def add_task(self, task: str, priority: int):
-        pass
-        # implementation incomplete
+    # def add_task(self, task: str, priority: int):
+    #     # implementation incomplete
 
     def delete_task(self, task_id: int):
-        pass
+        if task_id in self.tasks:
+            del self.tasks[task_id]
 
-    def edit_task(self, task_id: int, new_task: str, priority: int):
-        pass
-
-
-Task(1, {12, "Jeshika", "jeshika99@gmail.com", "jcka", "pass"}, [{1, "Do laundry", 3}])
-# Task.add_task("Email", 2)
+    # def edit_task(self, task_id: int, new_task: str, priority: int):
+    #     pass
