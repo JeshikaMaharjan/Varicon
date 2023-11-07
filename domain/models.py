@@ -1,52 +1,38 @@
-# from django.db import models
-
-# class CustomUser(models.Model):
-#     username = models.CharField(max_length=150, unique=True)
-#     password = models.CharField(max_length=128)
-
-#     def __str__(self):
-#         return self.username
-
-# class Task(models.Model):
-#     title = models.CharField(max_length=200)
-#     description = models.TextField(blank=True, null=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     due_date = models.DateField()
-#     is_completed = models.BooleanField(default=False)
-#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.title
-
-#     class Meta:
-#         ordering = ['due_date']
-
-#     def mark_as_completed(self):
-#         self.is_completed = True
-#         self.save()
-
-#     def mark_as_incomplete(self):
-#         self.is_completed = False
-#         self.save()
+# Entities
+class User:
+    def __init__(self, id: int, name: str, email: str, username: str, password: str):
+        self.id = id
+        self.name = name
+        self.email = email
+        self.username = username
+        self.password = password
 
 
-class CustomUser:
-    username: str
-    password: str
+# Value objects
+class TaskItem:
+    id: int
+    name: str
+    priority: int
 
 
+# Aggregates
 class Task:
-    title: str
-    description: str
-    created_at: str
-    due_date: str
-    is_completed: bool
-    user: str
+    def __init__(self, id: int, user: {User}, tasks: [{TaskItem}]):
+        self.id = id
+        self.user = user
+        self.tasks = tasks
+        print("User", user)
+        print(tasks)
 
-    def mark_as_completed(self):
-        self.is_completed = True
-        self.save()
+    def add_task(task: str, priority: int):
+        pass
 
-    def mark_as_incomplete(self):
-        self.is_completed = False
-        self.save()
+    def delete_task(task_id: int):
+        pass
+
+    def edit_task(task_id: int, new_task: str, priority: int):
+        pass
+
+
+Task(1, {12, "Jeshika", "jeshika99@gmail.com", "jcka", "pass"}, [{1, "Do laundry", 3}])
+# Task.add_task("Email", 2)
