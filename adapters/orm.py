@@ -1,58 +1,34 @@
-from database import Database
+# database.py will handle the database connection and provide a cursor and connection object that can be used by the repository.
+import sqlite3
 
 
-class TodoRepository:
+class Database:
     def __init__(self, database_name):
-        self.db = Database(database_name)
+        self.conn = sqlite3.connect(database_name)
+        self.cursor = self.conn.cursor()
 
-
-class TodoRepositoryImpl(TodoRepository):
-    def create(self, task_description, priority):
-        self.db.cursor.execute(
-            "INSERT INTO todos (task_description, priority,completed) VALUES (?, ?, 0)",
-            (task_description, priority),
+        # Create the 'users' table if it doesn't exist
+        self.cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY,
+                name TEXT,
+                email TEXT,
+                username TEXT,
+                password TEXT
+            )
+        """
         )
-        self.db.conn.commit()
-        return self.db.cursor.lastrowid
 
-    def get(self, todo_id):
-        self.db.cursor.execute(
-            "SELECT id, task_description,priority, completed FROM todos WHERE id = ?",
-            (todo_id,),
+        # Create the 'todos(TaskList)' table if it doesn't exist
+        self.cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS todos (
+                id INTEGER PRIMARY KEY,
+                task_description TEXT,
+                priority int,
+                completed INTEGER
+            )
+        """
         )
-        return self.db.cursor.fetchone()
-
-    def get_all(self):
-        self.db.cursor.execute(
-            "SELECT id, task_description, priority, completed FROM todos"
-        )
-        return self.db.cursor.fetchall()
-
-    def update(self, todo_id, updated_data):
-        update_query = "UPDATE todos SET {} WHERE id = ?".format(
-            ", ".join(f"{key} = ?" for key in updated_data.keys())
-        )
-        values = list(updated_data.values())
-        values.append(todo_id)
-        self.db.cursor.execute(update_query, values)
-        self.db.conn.commit()
-        return self.db.cursor.rowcount > 0
-
-    def delete(self, todo_id):
-        self.db.cursor.execute("DELETE FROM todos WHERE id = ?", (todo_id,))
-        self.db.conn.commit()
-        return self.db.cursor.rowcount > 0
-
-    def mark_completed(self, todo_id):
-        self.db.cursor.execute(
-            "UPDATE todos SET completed = 1 WHERE id = ?", (todo_id,)
-        )
-        self.db.conn.commit()
-        return self.db.cursor.rowcount > 0
-
-    def mark_incomplete(self, todo_id):
-        self.db.cursor.execute(
-            "UPDATE todos SET completed = 0 WHERE id = ?", (todo_id,)
-        )
-        self.db.conn.commit()
-        return self.db.cursor.rowcount > 0
+        self.conn.commit()
