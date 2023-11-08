@@ -22,7 +22,6 @@ class ToDoCommandHandler:
             self._delete_task(command)
 
     def _create_task(self, command):
-        self.task_id_counter += 1
         task = Task(self.task_id_counter, command.description, command.priority, False)
         TaskList(self.task_id_counter, "username", task)
 
